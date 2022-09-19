@@ -4,8 +4,9 @@ char * l(char * s){
     int len,a,b,c;
     int count,max,tem;
     while(s[len]!=0)    len++;
-    
+    //使用三重循环寻找，可能导致leetcode通过不了？
     for(a=0;a<len;a++){
+    //末尾查找
         for(b=len-1;b>a;b--){
             if(b-a<=max) break;
             for(c=0;c<b/2 ;c++){
@@ -17,17 +18,17 @@ char * l(char * s){
                 else{
 				
                     count=0;
-                    c=b/2+1;
+                    c=b/2+1;//相当于break
                 }
             }
             if(count!=0 && count>max)   {
                 max=count;
-                count=0;
-                tem=a;
+                count=0;//初始count；
+                tem=a;//方便后续查找；
             } 
         }
     }
-    *(s+tem+max)=0;
+    *(s+tem+max)=0;//长度未max；
     //printf("%d",max);
     return s+tem;
 }
