@@ -1,0 +1,153 @@
+# -dd
+记录每日。
+include<stdio.h>
+#include<stdlib.h>
+using namespace std;
+#include<iostream>
+typedef struct	ListNode{
+	int val;
+	struct ListNode *next;	
+};
+ //核心（oj）代码区
+struct ListNode* funion( ListNode *head1, ListNode *head2){
+	ListNode *pa;
+	ListNode *pb;
+	ListNode *c;
+	ListNode *fr;
+	pa=head1->next;
+	pb=head2;
+	c=head1;
+	fr=NULL;
+/*	if(head1->val>head2->val){
+		head2->next=head1;
+	}
+	else if(head1->val<head2->val){
+	}*/
+	do{
+		if(pa->val<pb->val){
+			c->next=pa;
+			c=c->next;
+			pa=pa->next;
+		}
+		else if(pa->val>pb->val){
+			c->next=pb;
+			c=c->next;
+			pb=pb->next;
+		}
+		else if(pa->val==pb->val){
+			fr=pb;
+			c->next=pa;
+			c=c->next;
+			pa=pa->next;
+			pb=pb->next;
+			free(fr);	
+		}		
+	}while(pa!=head1 && pb);
+	if(!pb){
+		c->next=pa;
+	}
+	else if(pa==head1){	
+		do{
+			c->next=pb;
+			c=c->next;
+			pb=pb->next;
+		}while(pb!=head2);
+		c->next=head1;
+	}
+	
+	struct	ListNode* cur=head1;
+	while(head1->val>cur->next->val){
+		cur=cur->next;
+	}
+	if(cur!=head1){
+		c->next=head1->next;
+		head1->next=cur->next;
+		cur->next=head1;
+	}
+	c=c->next;
+
+	//第一个没处理；
+	return c;
+}
+	
+
+
+
+
+
+int main(){
+//开辟空间出问题？还需后续排查；
+/*	int a;
+	scanf("%d",&a);
+	struct ListNode* head2=(ListNode*)malloc(sizeof(ListNode));
+	head2=NULL;
+	struct ListNode* head1=(ListNode*)malloc(sizeof(ListNode));
+	head1->val=a;
+	head1->next=NULL;
+	struct ListNode* cur;
+	cur=head1;
+	scanf("%d",&a);	
+	while(a>0){		
+		struct ListNode* pnew=(ListNode*)malloc(sizeof(ListNode));
+		pnew->val=a;
+		pnew->next=NULL;
+		cur->next=pnew;
+		cur=cur->next;
+		free(pnew);
+		scanf("%d",&a);
+	}
+	cur->next=head1;
+	int b;
+	scanf("%d",&b);
+	head2->val=b;
+	head2->next=NULL;
+	cur=head2;
+	scanf("%d",&b);	
+	while(b>0){		
+		struct ListNode* pnew=(ListNode*)malloc(sizeof(ListNode));
+		pnew->val=b;
+		pnew->next=NULL;
+		cur->next=pnew;
+		cur=cur->next;
+		free(pnew);
+		scanf("%d",&b);
+	}
+	cur->next=head2;*/
+  //使用笨方法一个一个开辟；
+	struct ListNode* head1=(ListNode*)malloc(sizeof(ListNode));
+	head1->val=5;
+	head1->next=NULL;
+	struct ListNode* new1=(ListNode*)malloc(sizeof(ListNode));
+	new1->val=2;
+	new1->next=NULL;
+	head1->next=new1;
+	struct ListNode* new2=(ListNode*)malloc(sizeof(ListNode));
+	new2->val=3;
+	new2->next=head1;
+	new1->next=new2;
+	struct ListNode* head2=(ListNode*)malloc(sizeof(ListNode));
+	head2->val=7;
+	head2->next=NULL;
+	struct ListNode* nnew1=(ListNode*)malloc(sizeof(ListNode));
+	nnew1->val=8;
+	nnew1->next=NULL;
+	head2->next=nnew1;
+	struct ListNode* nnew2=(ListNode*)malloc(sizeof(ListNode));
+	nnew2->val=9;
+	nnew2->next=head2;
+	nnew1->next=nnew2;
+	
+	struct ListNode* 
+	
+	int i=0;
+  //检验链表；
+	struct ListNode * pr=funion(head1,head2);
+	struct ListNode* cur=pr;
+	do{
+		printf("%d ",cur->val);
+		cur=cur->next;
+		i++;
+	}while(cur!=pr || i<10);
+	return 0;
+	
+}
