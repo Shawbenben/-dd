@@ -1,0 +1,67 @@
+# -dd
+记录每日。
+#include<stdio.h>//未完成，无main函数
+typedef LinkStack{
+	
+};
+
+bool Pop(LinkStack *S,ElemType *e){
+	struct LinkStack* p;
+	if(S){
+		p=S;
+		S=S->next;
+		delete p;
+		return true;
+	}
+	else
+		return false;
+}
+LinkStack *GetTop(LinkStack *S){
+	if(!S)
+		return NULL;
+	e=S->
+}
+
+bool	StackEmpty(LinkStack *S){
+	if(!S)	return false;
+	else
+		return true;
+}
+
+//oj代码如下
+bool matching(char exp[]){
+	int flag=1;
+	ch=*exp++;
+	while(*exp!='#' && flag==0){
+		switch of ch{
+			case'(':
+			case '[':
+			{
+				Push(S,ch);
+				break;
+			}
+			case ')':
+			{
+				if(!StackEmpty(S)&& GetTop(S)==')');
+				Pop(S);
+				else
+					flag=0;
+					break;		
+			}
+			case ']':
+			{
+				if(!StackEmpty(S) && GetTop(S)==']');
+				Pop(S);
+				else
+					flag=0;
+					break;
+				}	
+		}
+	ch=*exp++;
+	}
+	if(flag && StackEmpty(S))
+		return true;
+	else 
+		return false;
+	
+}
