@@ -17,7 +17,7 @@ int lengthOfLongestSubstring(char * s){
                 }           
             if(flag==0){
                 con++;  
-                if(con>max) max=con;  //不能再最后比，因为可能会销毁（关键）            
+                if(con>max) max=con;  //不能在最后比，因为可能会销毁（关键）            
             }
             if(flag==1){
                 con=1;
