@@ -1,0 +1,32 @@
+int lengthOfLongestSubstring(char * s){
+    int len;
+    while(s[len]!='\0')     len++;
+    if(len==0)  return 0;
+    if(len==1)  return 1;
+    int con=1;
+    int max=1;
+    int a,b,c,flag;
+    for(a=0;a<len-1;a++){
+      
+        for(b=a+1;b<=a+con && b<len;b++){//不加b<len会导致越界访问
+           flag=0;//重置flag
+            for(c=a;c<b;c++)//逐个判断
+                if(s[c]==s[b]){
+                    flag=1;
+                    break;
+                }           
+            if(flag==0){
+                con++;  
+                if(con>max) max=con;  //不能再最后比，因为可能会销毁（关键）            
+            }
+            if(flag==1){
+                con=1;
+                break;
+            }                 
+        }
+        
+        con=1;    
+    }
+    return max;
+
+}
