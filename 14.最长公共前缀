@@ -1,0 +1,20 @@
+# -dd
+记录每日。
+//遇到越界问题不怕了，知道怎么排查了
+//执行用时超过100%记录一下。
+char * longestCommonPrefix(char ** strs, int strsSize){
+    int i=0;
+    int j=0;
+    while(strs[0][i]!='\0')    i++;
+    while(++j<strsSize && i!=0){
+        for(int x=0;x<i;x++){
+    
+            if(strs[j][x]=='\0' || strs[j][x]!=strs[0][x]){
+                i=x;
+                break;
+            }
+        }
+} 
+    strs[0][i]='\0';
+    return strs[0];
+};
