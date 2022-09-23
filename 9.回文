@@ -1,0 +1,20 @@
+# -dd
+记录每日。
+bool isPalindrome(int x){
+    if(x<0)     return false;
+    if(x<10)    return true;
+    int a=x;
+    int i=1;
+    int h,t;
+    while(a/10>=10){a=a/10; i=i*10;}
+    while(a>0&&i>1){
+        h=a%10;
+        t=a/i;
+        if(h!=t) return false;
+        
+        a=a/10;
+        a=a%i;
+        i=i/10;
+    }
+return true;
+}
