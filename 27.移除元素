@@ -1,0 +1,13 @@
+# -dd
+记录每日。
+int removeElement(int* nums, int numsSize, int val){
+    int i,a,b;
+    i=b=0;
+    int c=numsSize;
+    while( c--&&i+b<=numsSize){
+        for(;nums[i]==val&&i+b<numsSize;i++);
+        nums[b++]=nums[i+b];
+    }
+    
+    return b;
+}
