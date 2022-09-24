@@ -1,0 +1,27 @@
+# -dd
+记录每日。
+struct ListNode* oddEvenList(struct ListNode* head){
+    while(!head || !head->next ||!head->next->next) return head;
+    struct ListNode* cur,*net,*con;
+    int a;
+    cur=net=head;
+    con=head->next;
+    while(cur->next->next){
+        net=cur->next;
+        cur->next=cur->next->next;
+        cur=net;
+        a=(a+1)%2;
+    }
+    if(a==1){
+        cur->next->next=con;
+        cur->next=NULL;
+    }
+    else{
+        cur->next->next=NULL;
+        cur->next=con;     
+    }
+    return head;
+    
+
+
+}
