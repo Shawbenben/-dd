@@ -1,0 +1,35 @@
+# -dd
+记录每日。
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+    if(!head)   return NULL;
+    if(n<1) return head;
+    if(head->next==NULL&&n==1)  return NULL;
+    struct ListNode* fast,*slow;
+    fast=slow=head;
+    while(fast->next){
+        fast=fast->next;
+        n--;
+        if(n==0)    break;
+    }
+    if(n>1) return head;
+    if(n==1){
+        head=head->next;
+        return head;
+    }
+    while(fast->next){
+        fast=fast->next;
+        slow=slow->next;
+    }
+    if(slow==head){
+        fast=slow->next;
+        slow->next=slow->next->next;
+        free(fast);
+        return head;
+    }
+    fast=slow->next;
+    slow->next=slow->next->next;
+   
+    fast->next=NULL;
+    free(fast);
+    return head;
+}
