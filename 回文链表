@@ -1,0 +1,32 @@
+# -dd
+记录每日。
+bool isPalindrome(struct ListNode* head){
+    if(!head->next) return true;
+    struct ListNode* cur,*fast,*slow;
+    slow=fast=cur=head;
+    int i,a;
+    while(cur->next){
+        cur=cur->next;
+        i++;
+    }
+    while((a++)<i/2&&fast->next)    fast=fast->next;
+    struct ListNode* prve=NULL;
+    cur=fast->next;
+    fast->next=NULL;  
+    while(cur){
+        fast=cur->next;
+        cur->next=prve;
+        prve=cur;
+        cur=fast;
+    }
+
+    while(cur){
+        if(cur->val!=slow->val) return false;
+        else{
+            cur=cur->next;
+            slow=slow->next;
+        }
+    }
+    return true;
+    
+
