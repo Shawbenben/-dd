@@ -1,0 +1,15 @@
+# -dd
+记录每日。
+int removeDuplicates(int* nums, int numsSize){
+    int a,b;
+    b=1;
+    nums[a]=nums[0];
+    while(b<numsSize){
+        while(nums[a]==nums[b]) b++; 
+        nums[(++a)]=nums[b];
+        b++;
+        a++;
+    }
+    //nums[a]=' ';
+    return a+1;
+}
