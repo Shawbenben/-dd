@@ -1,0 +1,17 @@
+# -dd
+记录每日。
+int findMaxConsecutiveOnes(int* nums, int numsSize){
+    int i;
+    int max,max0;
+    max=max0=0;
+    for(i=0;i<numsSize;i++){
+            if(nums[i]==1)  max0++;
+            else
+                max0=0;
+        
+        max=fmax(max0,max);
+        
+    }
+    
+    return max;
+}
