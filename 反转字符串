@@ -1,0 +1,25 @@
+# -dd
+记录每日。
+char * reverseWords(char * s){
+    int fast,slow,c;
+    fast=slow=0;
+    int len=strlen(s);
+    while(c<=len){
+        if(s[fast]==' ' || c==len){
+            //fanzhuang(fast,slow)
+            for(int i=0;i<(fast-slow)/2;i++){
+                char tem=s[fast-i-1];
+                s[fast-i-1]=s[slow+i];
+                s[slow+i]=tem;
+            }
+
+            c++;
+            fast=slow=c;
+        }
+        else{
+            fast++;
+            c++;
+        }
+    }
+    return s;
+}
