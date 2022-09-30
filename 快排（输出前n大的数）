@@ -1,0 +1,73 @@
+# -dd
+记录每日。
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+ 
+void myswap(int nums[],int a,int b){
+	int tem=nums[a];
+	nums[a]=nums[b];
+	nums[b]=tem;
+}
+
+void Myprintf(int nums[],int n){
+	int a=0;
+	while(a<n){
+		printf("%d ",nums[a]);
+		a++;
+	}
+	printf("\n");
+}
+int partition(int nums[],int start,int end,int n){
+	int dix=start+rand()%(end-start+1);
+	int pivot=nums[dix];
+	myswap(nums,dix,start);
+	int left=start+1;
+	int right=end;
+	while(left<=right){
+		while(left<=right &&  nums[left]>=pivot)	left++;
+		while(left<=right && nums[right]<=pivot)	right--;
+		
+		if(left<=right){
+			myswap(nums,left,right);
+			left++;
+			right--;
+		}
+		//Myprintf(nums,6);
+	}
+	myswap(nums,start,right);
+	return right;	
+}
+
+
+void quicksort_print(int nums[],int start,int end,int n){
+	if(start>=end)	return ;
+	int mid=partition(nums,start,end,n);
+	if(mid<n){
+		int x=start;
+		while(x<=mid){
+			printf("%d ",nums[x++]);
+		}
+		quicksort_print(nums,mid+1,end,n);
+	}
+	else{
+		quicksort_print(nums,start,mid-1,n);
+	}
+	
+}
+
+
+int main(){
+	int s,i;
+	printf("the sizeof nums[]>:");
+	scanf("%d",&s);
+	int nums[s];
+	while(i<s)	scanf("%d",&nums[i++]);
+	printf("please input the number or n>:");
+	int n;
+	scanf("%d",&n);
+	quicksort_print(nums,0,s-1,n);
+	//Myprintf(nums,s);
+	
+}
