@@ -1,0 +1,42 @@
+# -dd
+记录每日。
+代码块
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+    int a=quicksort_find(nums,0,nums.size()-1,nums.size());
+    return a;
+    }
+    int partition(vector<int>& nums, int start,int end){
+        int dix=start+rand()%(end-start+1);
+        
+        int pivot=nums[dix];
+        swap(nums[dix],nums[start]);
+        int left=start+1;
+        int right=end;
+//把相同的都往前放
+        while(right>=left){
+            while(right>=left &&  nums[left]==pivot)    left++;
+            while(right>=left && nums[right]!=pivot)    right--;
+            if(right>left){
+                swap(nums[left],nums[right]);
+                left++;
+                right--;
+            }
+        }
+        swap(nums[start],nums[right]);
+        return right;
+    }
+
+    int quicksort_find(vector<int>& nums,int start,int end,int n){
+       //if(start>=end)  return ;//一定有所求值，所以不需要这行。
+        int mid=partition(nums,start,end);
+        if((mid-start+1)>n/2)   return nums[mid];//判断是否超过1/2；
+        else return quicksort_find(nums,mid+1,end,n);
+    }
+};
+
+作者：Happy HaibtxA6
+链接：https://leetcode.cn/leetbook/read/sort-algorithms/et2gzs/?discussion=2hrNHI
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
