@@ -1,0 +1,9 @@
+# -dd
+记录每日。
+void merge(int* A, int ASize, int m, int* B, int BSize, int n){
+    if(n==0)    return A;
+    while(n>0 && m>0){
+        A[m+n]=A[m-1]>=B[n-1]? A[--m] : B[--n];
+        }
+    while(n--)  A[n]=B[n];
+}
