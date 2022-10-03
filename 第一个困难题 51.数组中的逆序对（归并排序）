@@ -1,0 +1,57 @@
+# -dd
+记录每日。
+int merge(int nums[],int start,int end){
+        if(start==end)  return 0;
+        int count=0;
+        int resul[end+3];
+        int mid=(start+end)/2;
+        int start1=start;
+        int start2=mid+1;
+        int end1=mid;
+        int end2=end;
+        int index1=start;
+        int index2=mid+1;
+        int resultindex=0;
+        while(index1<=end1 && index2<=end2){
+            if(nums[index1]>nums[index2]) {
+             resul[resultindex++]=nums[index2++];
+             count+=(end1-index1+1);
+            }
+            else{
+                resul[resultindex++]=nums[index1++];           
+            }
+        }
+        while(index1<=end1) resul[resultindex++]=nums[index1++];
+
+        while(index2<=end2) resul[resultindex++]=nums[index2++];
+        for(int i=start,j=0;i<=end;i++,j++)  nums[i]=resul[j];
+        return count;
+        
+    }
+
+    int mergefindsort(int nums[],int start,int end){
+        if(start>=end)  return 0;
+        int count=0;
+        int mid=(end+start)/2;
+    
+        int right=mergefindsort(nums,mid+1,end);
+        int left=mergefindsort(nums,start,mid);
+        
+        
+       /* for(int i=start;i<=mid;i++){
+            for(int j=end;j>=mid+1;j--){
+                if(nums[i]>nums[j]){
+                    count+=(j-mid);
+                    break;
+                }
+            }
+        }*/
+
+        count=merge(nums,start,end);
+
+        return left+right+count;
+    }
+int reversePairs(int* nums, int numsSize){
+    int count=mergefindsort(nums,0,numsSize-1);
+    return count;
+}
