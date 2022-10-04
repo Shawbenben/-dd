@@ -1,0 +1,50 @@
+# -dd
+记录每日。
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+void fswap(int nums[],int a,int b){
+	int tem=nums[a];
+	nums[a]=nums[b];
+	nums[b]=tem;
+}
+//【i，len】局部实现大顶堆，并且在总体【i，len】中应该一个数（i）不符合大顶堆格式；
+void maxheapify(int nums[],int i,int len){
+	int left = 2*i+1;
+	int right = left + 1;
+	int largest = i;
+	//筛选出一个Y中的最大数（下标）；
+	if(left<len && nums[left]>nums[largest])	largest=left;
+	if(right<len && nums[right]>nums[largest])	largest=right;
+	//沿着堆向下；
+	if(largest!=i){
+		fswap(nums,largest,i);
+		maxheapify(nums,largest,len);
+	}
+	
+}
+//初始完全无序数组的大顶堆建立。
+void BuildMaxHeap(int nums[],int len){
+	for(int i=len/2-1;i>0;i--){
+		maxheapify(nums,i,len);
+	}
+}
+
+void heapsort(int nums[],int len){
+	BuildMaxHeap(nums,len);
+  //逐步筛选出最大值并将其放入数组末端；
+	for(int i=len-1;i>=0;i--){
+		fswap(nums,i,0);
+		maxheapify(nums,0,i);//只有nums[0]需要移动；
+	}
+}
+
+
+int main(){
+	int nums[]={22,6,3,7,9};
+	int len=sizeof(nums)/sizeof(nums[0]);
+	heapsort(nums,len);
+	for(int i=0;i<len;i++)	printf("%d ",nums[i]);
+	return 0;
+}
