@@ -1,0 +1,37 @@
+# -dd
+记录每日。
+void fswap(int nums[],int a,int b){
+    int tem=nums[a];
+    nums[a]=nums[b];
+    nums[b]=tem;
+}
+
+void minheapify(int nums[],int i,int len){
+    int left=i*2+1;
+    int right=left+1;
+    int smallest=i;
+
+    if(left<len && nums[left]<nums[smallest])    smallest=left;
+    if(right<len && nums[right]<nums[smallest])  smallest=right;
+
+    if(smallest!=i){
+        fswap(nums,i,smallest);
+        minheapify(nums,smallest,len);
+    }
+}
+void Buildminheap(int arr[],int len){
+    for(int i=len/2-1;i>=0;i--){
+        minheapify(arr,i,len);
+    }
+}
+
+int* getLeastNumbers(int* arr, int arrSize, int k, int* returnSize){
+    Buildminheap(arr,arrSize);
+    for(int i=1;i<=k;i++){
+        returnSize[i-1]=arr[0];
+        fswap(arr,0,arrSize-i);
+        minheapify(arr,0,arrSize-i);
+    }
+    return returnSize;
+    
+}
