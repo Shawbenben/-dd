@@ -1,0 +1,63 @@
+# -dd
+记录每日。
+#include<stdio.h>
+#include<assert.h>
+#include<stdlib.h>
+#include<stdbool.h>
+
+typedef int STDatatype;
+typedef struct Stack{
+	STDatatype *a;
+	int top;
+	int capacity;
+}ST;
+
+void Stackinit(ST *ps);
+void Stackdestroy(ST* ps);
+void StackPush(ST *ps,STDatatype x);
+void StackPop(ST* ps);
+STDatatype StackTop(ST *ps);
+int StackSize(ST* ps);
+bool Stackempty(ST *ps);
+void text();
+int main(){
+	text();
+	return 0;
+}
+void text(){
+	Stack st;
+	Stackinit(&st);
+	StackPush(&st,1);
+	printf("%d",StackTop(&st));
+	StackPush(&st,2);
+	
+}
+void Stackinit(ST* ps){
+	assert(ps);
+	ps->a=NULL;
+	ps->top=0;
+	ps->capacity=0;	
+}
+
+void StackPush(ST *ps,STDatatype x){
+	assert(ps);
+	if(ps->capacity==ps->top){
+		int newcapacity=ps->capacity== 0 ? 4 : ps->capacity*2;
+		STDatatype* tem=(STDatatype*)realloc(ps->a,sizeof(STDatatype)*newcapacity);
+		if(tem==NULL){
+			printf("realloc fail");
+			exit(-1);
+		}
+		ps->a=tem;
+		ps->capacity=newcapacity;
+	}
+	
+	ps->a[ps->top]=x;
+	printf("%d\n",ps->a[0]);
+	ps->top++;
+	
+}
+STDatatype StackTop(ST *ps){
+	assert(ps);
+	return ps->a[ps->top-1];
+}
