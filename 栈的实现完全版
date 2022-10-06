@@ -1,0 +1,116 @@
+# -dd
+记录每日。
+#include<stdio.h>
+#include<assert.h>
+#include<stdlib.h>
+#include<stdbool.h>
+
+typedef int STDatatype;
+
+typedef struct Stack{
+	STDatatype *a;
+	int top;
+	int capacity;
+}ST;
+
+void Stackinit(ST *ps);
+void Stackdestroy(ST* ps);
+void StackPush(ST *ps,STDatatype x);
+void StackPop(ST* ps);
+STDatatype StackTop(ST *ps);
+int StackSize(ST* ps);
+bool Stackempty(ST *ps);
+void Stackout(ST *ps);
+void text();
+
+int main(){
+	//text();
+	text20();
+	return 0;
+}
+
+
+void text(){
+	Stack st;
+	Stackinit(&st);
+	StackPush(&st,1);
+//	printf("%d",StackTop(&st));
+	StackPush(&st,2);
+//	Stackdestroy(&st);
+	printf("the sizeof Stack>%d:\n",StackSize(&st));
+	Stackout(&st);
+	StackPop(&st);
+//	Stackdestroy(&st);
+	printf("the top number of Stack>:%d\n",StackTop(&st));
+	
+	
+}
+void Stackinit(ST* ps){
+	assert(ps);
+	ps->a=NULL;
+	ps->top=0;
+	ps->capacity=0;	
+}
+
+void StackPush(ST *ps,STDatatype x){
+	assert(ps);
+	if(ps->capacity==ps->top){
+		int newcapacity=ps->capacity== 0 ? 4 : ps->capacity*2;
+		STDatatype* tem=(STDatatype*)realloc(ps->a,sizeof(STDatatype)*newcapacity);
+		if(tem==NULL){
+			printf("realloc fail");
+			exit(-1);
+		}
+		ps->a=tem;
+		ps->capacity=newcapacity;
+	}
+	
+	ps->a[ps->top]=x;
+	//printf("%d\n",ps->a[0]);
+	ps->top++;
+	
+}
+STDatatype StackTop(ST *ps){
+	assert(ps);
+	assert(!Stackempty(ps));
+	return ps->a[ps->top-1];
+}
+
+
+void StackPop(ST* ps){
+	assert(ps);
+	assert(!Stackempty(ps));
+	ps->top--;	
+}
+
+bool Stackempty(ST* ps){
+	assert(ps);
+	if(ps->top==0)
+		return true;
+	else 
+		return false;
+		
+	//return ps->top == 0;	
+}
+
+int StackSize(ST* ps){
+	return ps->top;
+}
+
+void Stackdestroy(ST* ps){
+	assert(ps);
+	free(ps->a);
+	ps->a=NULL;
+	ps->capacity = ps->top =0;
+}
+
+void Stackout(ST* ps){
+	assert(ps);
+	
+	while(!Stackempty(ps)){
+		printf("%d ",StackTop(ps));
+		StackPop(ps);
+	}
+	printf("\n");
+	Stackdestroy(ps);
+}
