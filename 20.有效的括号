@@ -1,0 +1,83 @@
+# -dd
+记录每日。
+typedef struct stack{
+    char* a;
+    int top;
+    int capacity;
+}ST;
+
+void   Stackinit(ST* ps){
+    ps->a=NULL;
+    ps->top=0;
+    ps->capacity=0;
+}
+
+void Stackdestroy(ST* ps){
+	assert(ps);
+	free(ps->a);
+	ps->a=NULL;
+	ps->capacity = ps->top =0;
+}
+void Stackpush(ST *ps,char x){
+	assert(ps);
+	if(ps->capacity==ps->top){
+		int newcapacity=ps->capacity== 0 ? 4 : ps->capacity*2;
+		char* tem=(char*)realloc(ps->a,sizeof(char)*newcapacity);
+		if(tem==NULL){
+			printf("realloc fail");
+			exit(-1);
+		}
+		ps->a=tem;
+		ps->capacity=newcapacity;
+	}
+	
+	ps->a[ps->top]=x;
+	//printf("%d\n",ps->a[0]);
+	ps->top++;
+	
+}
+
+char StackTop(ST* ps){
+    return ps->a[ps->top-1];
+}
+
+void StackPop(ST* ps){
+    ps->top--;
+}
+
+bool Stackempty(ST* ps){
+    assert(ps);
+    return ps->top == 0;
+}
+bool isValid(char * s){
+    int i=0;
+    struct stack ps;
+    char op;
+    Stackinit(&ps);
+    while(s[i]!='\0'){
+        switch(s[i]){   
+            case '(':   Stackpush(&ps,s[i]);break;
+
+            case '[':   Stackpush(&ps,s[i]);break;
+
+            case '{':   Stackpush(&ps,s[i]);break;
+
+            default: 
+                    if(Stackempty(&ps)) {Stackdestroy(&ps);return false;}
+                    op =StackTop(&ps);
+                    StackPop(&ps);
+                    if( s[i]==')' && op!='('
+                    || s[i]=='}' && op!='{'
+                    || s[i]==']' && op!='[')
+                    {
+                        Stackdestroy(&ps);
+                        return false;
+                    }
+        }
+            i++;    
+    }
+
+    if(!Stackempty(&ps)){ Stackdestroy(&ps);return false;}
+
+    else return true;
+}
