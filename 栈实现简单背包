@@ -1,0 +1,120 @@
+# -dd
+记录每日。
+#include<stdio.h>
+#include<assert.h>
+#include<stdlib.h>
+#include<stdbool.h>
+
+typedef int STDatatype;
+
+typedef struct Stack{
+	STDatatype *a;
+	int top;
+	int capacity;
+}ST;
+void Stackdestroy(ST* ps);
+void Stackinit(ST *ps);
+void Stackdestroy(ST* ps);
+void StackPush(ST *ps,STDatatype x);
+void StackPop(ST* ps);
+STDatatype StackTop(ST *ps);
+bool Stackempty(ST *ps);
+void Stackout(ST* ps,int *nums){
+	assert(ps);
+	
+	while(!Stackempty(ps)){
+		printf("%d",nums[StackTop(ps)]);
+		StackPop(ps);
+	}
+	printf("\n");
+	Stackdestroy(ps);
+}
+
+int main(){
+	int n;
+	int flag;
+	scanf("%d ",&n);
+	int v[n];
+	for(int i=0;i<n;i++)	scanf("%d",&v[i]);
+	int i;
+	int k=20;
+	Stack st;
+	Stackinit(&st);
+	do{
+		if(i==n ){
+			i=StackTop(&st)+1;
+			k+=v[StackTop(&st)];
+			StackPop(&st);			
+		}	
+		
+		if(k>=v[i])	{
+			StackPush(&st,i);
+			k-=v[i];
+		}
+		i++;
+		if(k==0)	{
+		flag=1;
+		printf("yes\n");
+		Stackout(&st,v);
+		break;
+		}
+			
+	}while(!Stackempty(&st) && i<n);
+	
+	if(flag==0)
+		printf("no");
+}
+
+void Stackinit(ST* ps){
+	assert(ps);
+	ps->a=NULL;
+	ps->top=0;
+	ps->capacity=0;	
+}
+
+void StackPush(ST *ps,STDatatype x){
+	assert(ps);
+	if(ps->capacity==ps->top){
+		int newcapacity=ps->capacity== 0 ? 4 : ps->capacity*2;
+		STDatatype* tem=(STDatatype*)realloc(ps->a,sizeof(STDatatype)*newcapacity);
+		if(tem==NULL){
+			printf("realloc fail");
+			exit(-1);
+		}
+		ps->a=tem;
+		ps->capacity=newcapacity;
+	}
+	
+	ps->a[ps->top]=x;
+	//printf("%d\n",ps->a[0]);
+	ps->top++;
+	
+}
+STDatatype StackTop(ST *ps){
+	assert(ps);
+	assert(!Stackempty(ps));
+	return ps->a[ps->top-1];
+}
+
+
+void StackPop(ST* ps){
+	assert(ps);
+	assert(!Stackempty(ps));
+	ps->top--;	
+}
+
+bool Stackempty(ST* ps){
+	assert(ps);
+	if(ps->top==0)
+		return true;
+	else 
+		return false;
+		
+	//return ps->top == 0;	
+}
+void Stackdestroy(ST* ps){
+	assert(ps);
+	free(ps->a);
+	ps->a=NULL;
+	ps->capacity = ps->top =0;
+}
