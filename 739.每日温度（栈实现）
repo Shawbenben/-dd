@@ -1,0 +1,63 @@
+# -dd
+记录每日。
+typedef struct stack{
+     int  *a;
+     int top;
+     int capacity;
+ }ST;
+
+ void Stackinit(ST* ps){
+     ps->a=NULL;
+     ps->top=0;
+     ps->capacity=0;
+ }
+
+void Stackpush(ST* ps,int x){
+    assert(ps);
+    if(ps->top==ps->capacity){
+        int newcapacity= ps->top==0? 4: 2*ps->capacity;
+        int *tem=(int*)realloc(ps->a,sizeof(int)*newcapacity);
+        ps->a=tem;
+        ps->capacity=newcapacity;
+    }
+    ps->a[ps->top]=x;
+    ps->top++;
+}
+void Stackpop(ST* ps){
+    assert(ps);
+    ps->top--;
+}
+
+int Stacktop(ST* ps){
+    return ps->a[ps->top-1];
+}
+
+void Stackdestory(ST* ps){
+    ps->a=NULL;
+    ps->top=0;
+    ps->capacity=0;
+    free(ps);
+}
+
+bool Stackempty(ST* ps){
+    return ps->top==0;
+}
+int* dailyTemperatures(int* temperatures, int temperaturesSize, int* returnSize){
+    struct stack st;
+    Stackinit(&st);
+    Stackpush(&st,0);
+    int i=0;
+    for(i=1;i<temperaturesSize;i++){
+        if(temperatures[i]<=temperatures[Stacktop(&st)]){
+            Stackpush(&st,i);
+        }
+        else{
+            while(!Stackempty(&st)&&temperatures[i]>temperatures[Stacktop(&st)]){
+            returnSize[Stacktop(&st)]=i-Stacktop(&st);
+            Stackpop(&st);                
+             }
+            Stackpush(&st,i);
+        }
+    }
+    return returnSize;
+}
