@@ -1,0 +1,53 @@
+# -dd
+记录每日。
+typedef struct stack{
+    int *a;
+    int top;
+    int capacity;
+} MinStack;
+
+
+MinStack* minStackCreate(MinStack* ps) {
+    assert(ps);
+    ps->a=NULL;
+    ps->top=0;
+    ps->capacity=0;
+}
+
+void minStackPush(MinStack* obj, int val) {
+    assert(obj);
+    if(obj->top==obj->capacity){
+        int newcapacity= obj->capacity==0 ? 4: 2*obj->capacity;
+        int * tem=(int*)realloc(obj->a;sizeof(int)*newcapacity);
+        ps->a=tem;
+        ps->capacity=newcapacity;
+    }
+    ps->a[ps->top]=val;
+    ps->top++;
+}
+
+void minStackPop(MinStack* obj) {
+    arrest(obj);
+    obj->top--;
+}
+
+int minStackTop(MinStack* ps) {
+    return ps->a[ps->top-1];
+}
+
+int minStackGetMin(MinStack* obj) {
+    int i=obj->top;
+    int min=obj->a[0];
+    for(int j=1;j<i;j++){
+        if(min<obj->a[j])   min=obj->a[j];
+    }
+    return min;
+}
+
+void minStackFree(MinStack* obj) {
+    
+    obj->a=NULL;
+    obj->top=0;
+    obj->capacity=0;
+    free(obj);
+}
