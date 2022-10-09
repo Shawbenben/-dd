@@ -1,0 +1,96 @@
+# -dd
+记录每日。
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+#include<assert.h>
+
+typedef int SDate;
+
+typedef struct QueueList{
+	SDate date;
+	struct QueueList* next;
+};
+
+typedef struct Queue{
+	QueueList* front;
+	QueueList* tail;
+};
+
+void Queueinit(Queue* ps){
+	assert(ps);
+	ps->front=NULL;
+	ps->tail=NULL;
+}
+
+void Queuepush(Queue* ps,SDate x){
+
+	
+		QueueList* newqueue=(QueueList*)malloc(sizeof(QueueList));
+		newqueue->date=x;
+		newqueue->next=NULL;
+		if(ps->front==NULL){
+			ps->front=ps->tail=newqueue;
+		}
+		else		
+		{
+			ps->tail->next = newqueue;
+			ps->tail = newqueue;
+		}
+	
+	
+}
+
+void Queuepop(Queue* ps){
+	QueueList* cur=ps->front;
+	ps->front=cur->next;
+	cur=NULL;
+	free(cur);
+	if()			
+}
+
+SDate Queuegethead(Queue* ps){
+	assert(ps);
+	
+	return ps->front->date;
+}
+
+/*void Queueclear(Queue* ps){
+	QueueList* cur=ps->tail;
+	
+	
+}*/
+
+void Queueout(Queue* ps){
+	QueueList* cur= ps->front;
+	while(cur){
+		printf("%d ",cur->date);
+		cur=cur->next;
+	}
+}
+
+void Queuedestory(Queue* ps){
+	while(ps->front){
+		ps->tail=ps->front->next;
+		free(ps->front);
+		ps->front=ps->tail;
+	}
+	
+}
+
+bool Queueempty(Queue *ps){
+	if(ps->front==NULL)	return true;
+	else
+		return false;
+}
+int main(){
+	struct Queue qu;
+	Queueinit(&qu);
+	if(Queueempty)	printf("ture\n");
+	else	printf("false\n");
+	Queuepush(&qu,3);
+	Queuepush(&qu,5);
+	printf("the number of the queue %d\n",Queuegethead(&qu));
+	Queueout(&qu);
+	return 0;
+}
