@@ -1,0 +1,41 @@
+# -dd
+记录每日。
+#include<stdio.h>
+
+void countingsort(int nums[],int len){
+	int max,min;
+	max=min=nums[0];
+	for(int i=1;i<len;i++){
+		if(nums[i]>max)	max=nums[i];
+		else if(nums[i]<min)	min=nums[i];
+	}
+	
+	int range=max-min;
+	int counting[range];
+	for(int i=0;i<range;i++){
+		counting[i]=0;
+	}
+	
+	for(int i=0;i<len;i++){
+
+		counting[nums[i]-min]++;
+	}
+	
+	
+	int flag,i;
+	for(flag=0,i=0;flag<range;flag++){
+		while(counting[flag]--){
+			nums[i++]=flag+min;		
+		}
+	}
+	
+}
+   
+
+int main(){
+	int nums[]={5,1,6,8,-6,62,-56,12};
+	int len=sizeof(nums)/sizeof(nums[0]);
+	countingsort(nums,len);
+	for(int i=0;i<len;i++)	printf("%d ",nums[i]);
+	return 0;
+}
