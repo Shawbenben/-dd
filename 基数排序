@@ -1,0 +1,62 @@
+# -dd
+记录每日。
+void fill(int counting[],int val){
+	for(int i=0;i<10;i++){
+		counting[i]=val;
+	}
+}
+
+void arraycopy(int result[],int nums[],int len){
+	for(int i=0;i<len;i++){
+		nums[i]=result[i];
+	}
+}
+
+void mp(int nums[],int len){
+	for(int i=0;i<len;i++)	printf("%d ",nums[i]);
+	printf("\n");
+}
+void radixsort(int nums[],int len){
+	int max=nums[0];
+	for(int i=1;i<len;i++){
+		if(nums[i]>max)	max=nums[i];
+	}
+	
+	int maxlen=0;
+	for(int i=max;i!=0;i=i/10,maxlen++);
+	
+	int counting[10];
+	fill(counting,0);
+	//mp(counting,10);
+	int radix;
+	int dev=1;
+	for(int i=0;i<maxlen;i++){
+		
+		for(int j=0;j<len;j++){
+			radix = nums[j]/ dev % 10;
+			counting[radix]++;
+		}
+		mp(counting,10);
+		
+		int precount=0;
+		for(int j=0;j<10;j++){
+			precount+=counting[j];
+			counting[j]=precount-counting[j];		
+		}
+		
+		int result[len];
+		fill(result,0);
+		for(int j=0;j<len;j++){
+			radix= nums[j]/ dev % 10;		
+			result[counting[radix]]=nums[j];
+			printf("radix>:%d couting>:%d\n",radix,counting[radix]);
+			counting[radix]++;			
+		}
+		mp(result,13);
+		dev*=10;
+		fill(counting,0);
+		arraycopy(result,nums,len);
+	}
+
+	
+}
