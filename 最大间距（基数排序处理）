@@ -1,0 +1,66 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    int abs(int a,int b){
+        if(a>b) return a-b;
+        else return b-a;
+    }
+    void fill(vector<int>& nums,int val){
+        
+        for(int i=0;i<nums.size();i++){
+            nums[i]=val;
+        }
+    }
+    void arraycopy(vector<int>& result,vector<int>& nums){
+        for(int i=0;i<result.size() &&i<nums.size();i++)
+            nums[i]=result[i];
+    }
+    int maximumGap(vector<int>& nums) {
+        if(nums.size()<2)   return 0;
+        if(nums.size()==2)  return abs(nums[1],nums[0]);
+        int max=nums[0];
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]>max) max=nums[i];
+        }
+        int maxlen=0;
+        for(int i=max;i!=0;i=i/10,maxlen++);
+        int dev=1;
+        int radix;
+        vector<int>counting(10,0);
+        fill(counting,0);
+        for(int i=0;i<maxlen;i++){
+            
+            
+            
+            for(int j=0;j<nums.size();j++){
+                radix = nums[j]/dev%10;
+                counting[radix]++;
+            }
+            
+            int precount=0;
+            for(int j=0;j<10;j++){
+                precount+=counting[j];
+                counting[j]=precount-counting[j];
+            }
+            vector<int>result(nums.size(),0);
+            fill(result,0);
+
+            for(int j=0;j<nums.size();j++){
+                radix=nums[j]/dev%10;
+                result[counting[radix]]=nums[j];
+                counting[radix]++;
+            }
+
+            dev*=10;
+            fill(counting,0);
+            arraycopy(result,nums);
+        }
+
+        int dif=nums[1]-nums[0];
+        for(int i=1;i<nums.size()-1;i++){
+            if(dif<nums[i+1]-nums[i])   dif=nums[i+1]-nums[i];
+        }
+        return dif;
+    }
+};
