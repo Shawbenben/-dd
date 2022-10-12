@@ -1,0 +1,61 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    int abs(int a){
+        if(a>0) return a;
+        else return -a;
+    }
+    void fill(vector<int>& nums,int val){
+        for(int i=0;i<nums.size();i++){
+            nums[i]=val;
+        }
+    }
+    void arraycopy(vector<int>& nums,vector<int>& result){
+        for(int i=0;i<nums.size();i++){
+            nums[i]=result[i];
+        }
+    }
+    int smallestRangeI(vector<int>& nums, int k) {
+        if(nums.size()==1)  return 0;
+
+        int max=nums[0];
+        for(int i=0;i<nums.size();i++)
+            if(max<nums[i]) max=nums[i];    
+
+        int maxlen=0;
+        for(int i=max;i!=0;i=i/10,maxlen++);
+
+        vector<int>counting(10,0);
+        int dev=1;
+        vector<int>result(nums.size(),0);
+        for(int i=0;i<maxlen;i++){
+            for(int j=0;j<nums.size();j++){
+                int radix= nums[j]/dev%10 ;
+                counting[radix]++;
+            }
+            
+            for(int j=1;j<9;j++){
+                counting[j]=counting[j]+counting[j-1];
+            }
+
+            for(int j=0;j<nums.size();j++){
+                int radix=nums[j]/dev%10;
+                result[--counting[radix]]=nums[j];
+            }
+
+            dev=dev*10;
+            arraycopy(nums,result);
+            fill(counting,0);
+        }
+        max=0;
+        int tem;
+        k=abs(k);
+        for(int i=1;i<nums.size();i++){
+            tem=nums[i]-nums[i-1]-2*k;
+            if(max<tem) max=tem;
+        }
+
+        return max;
+    }
+};
