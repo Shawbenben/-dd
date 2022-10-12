@@ -1,0 +1,58 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    void fill(vector<int>& nums,int val){
+        for(int i=0;i<nums.size();i++){
+            nums[i]=val;
+        }
+    }
+    void arraycopy(vector<int>& nums,vector<int>& result){
+        for(int i=0;i<nums.size();i++){
+            nums[i]=result[i];
+        }
+    }
+
+    int arrayPairSum(vector<int>& nums) {
+        int max=nums[0];
+        for(int i=0;i<nums.size();i++){
+            if(max<nums[i]) max=nums[i];
+        }   
+        int maxlen=0;
+        for(int i=max;i!=0;i=i/10,maxlen++);
+
+        vector<int>counting(19,0);
+        vector<int>result(nums.size(),0);
+        int radix=0;
+        int dev=1;
+
+        for(int i=0;i<maxlen;i++){
+            for(int j=0;j<nums.size();j++){
+                radix= nums[j]/dev%10+9;
+                counting[radix]++;
+            }
+
+            int precount=0;
+            for(int j=0;j<19;j++){
+                precount+=counting[j];
+                counting[j]=precount-counting[j];
+            }
+
+           
+            for(int j=0;j<nums.size();j++){
+                radix=nums[j]/dev%10+9;
+                result[counting[radix]++]=nums[j];        
+            }
+            arraycopy(nums,result);
+            fill(counting,0);
+            dev*=10;
+        }
+
+        int res=0;
+        for(int i=0;i<nums.size();i+=2){
+            res+=nums[i];
+        }
+        return res;
+
+    }
+};
