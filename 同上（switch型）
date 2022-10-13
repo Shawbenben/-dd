@@ -1,0 +1,43 @@
+# -dd
+记录每日。
+int main(){
+
+	char arr1[3][3] = { {5, 2, 4}, {10, 2, 1},{+,0,0} };
+	int tokensSize=5;
+    ST * st=init();
+    int val=0;
+    for(int i=0;i<tokensSize;i++){
+        char ch=tokens[i];
+        switch (ch){
+            case '+':{
+                val = pop(st) + pop(st);
+                push(st,val);
+                break;
+            }
+            case '-':{
+                val = pop(st) - pop(st);
+                push(st,val);
+                break;
+            }
+            case '*':{
+                val = pop(st) * pop(st);
+                push(st,val);
+                break;
+            }
+            case '/':{
+                val = ch-'0';
+                push(st,val);
+                break;
+            }
+            default :{
+                val = turn(tokens[i]);
+                
+                push(st,val);
+                break;
+            }    
+        }
+    }
+    int res = pop(st);
+    //if(isempty(st)) destory(st);
+    printf("%d",res);
+}
