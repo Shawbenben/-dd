@@ -1,0 +1,85 @@
+# -dd
+记录每日。
+typedef struct Linkstack{
+    long int  data[10001];
+    int  top;
+}ST;
+
+ST* init(){
+    ST* ps = (ST*)malloc(sizeof(ST));
+    ps->top = 0;
+    return ps;
+}
+
+void Push(ST* ps,long int e){
+    ps->data[ps->top]=e;
+    ps->top++;
+
+}
+int  Pop(ST* ps){
+    ps->top--;
+    int a=ps->data[ps->top];
+    return a;
+}
+bool isempty(ST* ps){
+    if(ps->top == 0)    return true;
+    else return false;
+}
+
+int turn(char *str){
+        int n = 0;
+    int flag = 0;
+    assert(str);
+    if(*str == '-')
+    {
+        flag = 1;
+        str++;
+    }
+    while(*str >= '0' && *str <= '9')
+    {
+        n = n*10 + (*str - '0');
+        str++;
+    }
+    if(flag == 1)
+    {
+        n = -n;
+    }
+    return n;
+
+}
+int IsSign(char*str){
+    if(strcmp(str,"+")==0||strcmp(str,"-")==0||strcmp(str,"*")==0||strcmp(str,"/")==0){
+        return 1;
+    }
+    return -1;
+}
+
+
+int evalRPN(char ** tokens, int tokensSize){
+    ST * S=init();
+    
+    for(int i=0;i<tokensSize;i++){
+        if(IsSign(tokens[i])==-1){
+            int num=turn(tokens[i]);
+            Push(S,num);
+        }
+        else{
+            long int num1 = Pop(S);
+            long int num2 = Pop(S);
+            if (strcmp(tokens[i],"+")==0) {
+                Push(S, num1 + num2);
+            }
+            else if (strcmp(tokens[i],"-")==0) {
+                Push(S, num2 - num1);
+            }
+            else if (strcmp(tokens[i],"*")==0) {
+                Push(S, num1 * num2);
+            }
+            else if (strcmp(tokens[i],"/")==0) {
+                Push(S, num2 / num1);
+            }
+        }
+    }
+
+    return Pop(S);
+}
