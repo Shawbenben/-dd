@@ -1,0 +1,39 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int row= haystack.length();
+        int col = needle.length();
+        vector<vector<int>> count(row,vector<int>(col));
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                count[i][j] = 0;
+                if(haystack[i] == needle[j])
+                    count[i][j]=1;
+            }
+        }
+        
+        int max,flag;
+        flag=max=0;
+        int c,r;
+        int ps=-1;
+        for(int i=0;i<=row-col;i++){
+            c=0;
+            r=i;
+           while(c<col){
+                if(count[r+c][c] == 1){
+                    flag++;
+                    if(flag==col)   return r+c-flag+1;
+                }
+                else{        
+                    flag=0;
+                }
+            c++;
+
+            }
+            flag=0;
+        }
+    return -1;
+    }
+};
