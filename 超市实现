@@ -1,0 +1,306 @@
+# -dd
+记录每日。
+二、实验基本内容
+1.在调研的基础上，按照软件工程规范进行系统需求分析；
+2.采用抽象数据类型定义商品、店员、店长、购物小票、顾客购物清单、库存清单、当日结算清单、商品采购清单、补货清单等数据结构；
+3.分析超市日常运营和管理活动，设计系统运行基本流程；
+4.利用文件实现链表的初始化（模拟每日超市运营前准备工作）、实现链表销毁（闭店下班），链表节点查找（商品查询）、链表节点修改（商品销售、补货等）等超市进销存相关操作；
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
+#include<conio.h>
+
+typedef struct Goods{
+	char number[10];
+	char goodname[20];
+	int  sum;
+	int  extant;
+	int  price;
+}Good;
+
+typedef struct goodlist{
+	struct Goods good;
+	struct goodlist* next;
+}List;
+
+void init(List* L){
+		
+		List *p,*newn;
+		p=L;
+		FILE *fp = fopen("commodity list.txt","r+");
+		char n[10];char name[20];int su;int pri,ex;
+		while(fscanf(fp,"%s%s%d%d%d",n,name,&ex,&su,&pri)!=EOF){
+			
+			newn = (List*)malloc(sizeof(List));
+			strcpy(newn->good.number,n);	
+			strcpy(newn->good.goodname,name);
+			newn->good.extant = newn->good.sum =su;
+			newn->good.price = pri;
+			newn->next=NULL;
+			p->next=newn;
+			p=p->next;
+		}
+
+}
+void show(List* cur){
+	printf("%-16s%-17s",cur->good.number,cur->good.goodname);
+	printf("%-8d %-12d %-3d\n",cur->good.sum,cur->good.extant,cur->good.price);
+}
+void framework(){
+	printf("**********************CCNU SUPERMARKET MANAGEMNET SYSTEM**********************\n");
+	printf("************************   PLEASE SELECT THE ACTION   ************************\n");
+	printf("***************1. check all commodity   2. look for commodity  ***************\n");
+	printf("***************3. enter shopping mode   4. replenish commodity ***************\n");	
+	printf("***************5. add new commodity     6. replenish commodity ***************\n");	
+	printf("****************************0.close the supermaket****************************\n");
+	printf("******************************************************************************\n");
+}
+void check(List* L);
+void Find(List* L);
+void shopping(List* L);
+void replenish(List*L);
+void add(List* L);
+void close(List **L);
+void destory(List** L);
+
+int main(){
+	List* L = (List*)malloc(sizeof(List));
+	L->next=NULL;	
+	init(L);	
+
+	
+	int a;
+	do{
+		framework();
+		scanf("%d",&a);
+		switch(a)
+		{
+			case 0:{
+				close(&L);
+				break;
+			}
+			case 1 :{
+				check(L);
+				break;
+			}
+			case 2 :{
+				Find(L);
+				break;
+			}
+			case 3 :{
+				shopping(L);
+				break;
+			}
+			case 4 :{
+				replenish(L);
+				break;
+			}
+			case 5 :{
+				add(L);
+				break;
+			}
+			default :{
+				printf("wrong number");
+				break;
+			}
+		}
+		
+	}while(a!=0);
+	return 0;
+}
+
+
+
+
+
+void check(List *L){
+	printf("\n");
+	printf("NUMBER          GOODSNAME        SUM     REMINDER      PRICE\n");
+	List *cur=L;
+	cur=cur->next;
+	while(cur){
+		show(cur);
+		cur=cur->next;
+	}
+}
+
+void Find(List *L){
+	printf("\n");
+	printf("please input the commodity you want to find(both number and name is OK)>:");
+	char need[20];
+	char exp;
+	for(int i=0;i<20;i++){
+		 
+		exp=getch();
+		if(exp>='a'&&exp<='Z' || exp>='0'&&exp<='9' || exp==32){
+			need[i]=exp;
+			printf("%c",need[i]);
+		}
+		else if(exp==13){
+			need[i]='\0';
+			break;
+		}
+		else if(exp==127){
+			i-=2;
+			continue;
+		}
+		else{
+			i--;
+			printf("\a");
+			continue;
+		}	
+	}
+	
+	List* cur=L->next;
+	while(cur){
+		if(!strcmp(cur->good.goodname,need) || !strcmp(cur->good.number,need)){
+			printf("\nNUMBER          GOODSNAME        SUM     REMINDER      PRICE\n");
+			show(cur);
+		}
+		cur=cur->next;	
+	}
+}
+
+void shopping(List* L){
+	printf("Do you need list(1 to YES, 0 to NO)>:");
+	char p = getchar();
+	if(p == '1')	check(L);
+	int i=0,a;
+	int count=0;
+	printf("please select the commodity you need>:\n");
+	while(true){
+		
+		scanf("%d",&a);
+		i=a;
+		if(i<=0)	break;
+		char need[20];
+		gets(need);
+		//printf("the name or number of you want>:");
+		//puts(need);
+		//printf("%d",strcmp(need,"cccc"));
+		List* cur=L->next;
+		while(cur){
+			if(!strcmp(need,cur->good.goodname) || !strcmp(need,cur->good.number)){
+			
+				while(cur->good.extant < i){
+					printf("the %s we only have %d,please choose again>:",cur->good.goodname,cur->good.extant);
+					scanf("%d",&i);
+				}
+				count += cur->good.price * i;
+				cur->good.extant -= i; 
+				
+			}
+			cur=cur->next;
+		}
+		
+	}	
+	printf("you need to pay %d",count);	
+}
+
+void replenish(List* L){
+	printf("\n which replenishment methons you need(1.Complement a single piece 2.Replenish all to full)>:");
+	int a,i,num,ad;
+	num=0;
+	scanf("%d",&a);
+	if(a == 1){
+		char ned[20];
+		printf("please input which commodity you need to replenish(input the number)>:");
+		scanf("%s",ned);
+		//puts(need);
+		List *cur = L->next;
+		while(cur){
+			if(!strcmp(ned,cur->good.number)){
+				printf("Do you need to change sums(1 to yes,either to no)>:");
+				scanf("%d",&i);
+				if(i==1){
+					printf("please input the sum you want>:");
+					scanf("%d",&num);
+					cur->good.sum = num;				
+				}
+				printf("then how much %s you need to add(no more than %d)>:",cur->good.goodname,cur->good.sum-cur->good.extant);
+				scanf("%d",&ad);
+				cur->good.extant+=ad;
+				printf("you need to pay %d\nand now you have %d %s",ad*cur->good.price,cur->good.extant,cur->good.goodname);
+		}
+			cur=cur->next;
+		}
+	}
+	else if(a==2){
+		List* cur = L->next;
+		int ad;
+		while(cur){
+			ad = cur->good.sum - cur->good.extant;
+			num+=ad*cur->good.price;
+			printf("the %s add %d,need %dyuan\n",cur->good.goodname,ad,ad*cur->good.price);
+			cur=cur->next;
+		}
+		check(L);
+		printf("total need %dyuan\n",num);
+	}
+	else{
+		printf("the wrong number!!!");
+	}		
+}
+
+void destory(List **L){
+	List *cur ,*pre;
+	cur = pre =*L;
+	
+	while(pre){
+		cur = pre;
+		pre=pre->next;
+		cur->next=NULL;
+		free(cur);	
+	}
+	printf("finish\n");	
+	
+}
+
+void add(List* L){
+	int a;
+	do{
+		Good newgood;
+	//	printf("please input gexiang shuxing >:");
+		printf("input the new number and name and price>:");
+		scanf("%s",newgood.number);
+		
+		scanf("%s",newgood.goodname);
+		scanf("%d",&newgood.price);		
+		newgood.extant = newgood.sum = 0;
+		
+		List *cur = L;
+		while(cur->next){
+			
+			if(strcmp(cur->next->good.number,newgood.number)>0){
+			
+				break;
+			}
+			else
+				cur=cur->next;		
+		}
+		
+		//printf("%s%s",newgood.goodname,newgood.number);
+		List *newp =(List*)malloc(sizeof(List));
+		newp->next =  cur->next;
+		newp->good = newgood;
+		cur->next = newp;
+		printf("do you need again(1 to yes ,eithe to no)>:");
+		a = 1 ;
+		scanf("%d",&a);
+	}while(a == 1);
+}
+
+void close(List **L){
+	FILE *fp = fopen("commodity list.txt","w+");
+	List* cur = *L;
+	cur=cur->next;
+	int i=0;
+	while(cur && i++<100){
+		fprintf(fp,"%s %s %d %d %d\n",cur->good.number,cur->good.goodname,cur->good.sum,cur->good.extant,cur->good.price);
+		cur = cur->next;
+	}
+	fclose(fp);
+}
