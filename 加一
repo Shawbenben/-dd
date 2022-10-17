@@ -1,0 +1,27 @@
+# -dd
+记录每日。
+int* plusOne(int* digits, int digitsSize, int* returnSize){
+    int i,a;
+    for(i=0;i<=digitsSize;i++){
+        if(digits[digitsSize-i-1] != 9 ){
+            break;
+        }
+    }
+    if(i == digitsSize){
+        returnSize[0] = 1;
+        for(a = 1;a<=digitsSize;a++){
+            returnSize[a] = 0;
+        }    
+    }
+    else{
+        for( a =0;a<digitsSize-i;a++){
+            returnSize[a] = digits[a];
+        }
+        returnSize[a++] = digits[a] + 1;
+        for(int j =digitsSize- i+1;j<=digitsSize;j++ ){
+            returnSize[j] = 0;
+        }
+    }
+    
+    return returnSize;
+}
