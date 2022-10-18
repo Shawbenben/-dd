@@ -1,0 +1,37 @@
+# -dd
+记录每日。
+#include<iostream>
+#include<stack>
+using namespace std;
+int main(){
+	int nums[]={2,6,3,8,9};
+	int target = 11;
+	
+	stack<int> st;
+        int count=0;
+        
+        for(int i=0;i<=5;i++){
+
+            if(i == 5 && !st.empty()){
+                target +=nums[st.top()];
+                i = st.top()+1;
+                st.pop();
+                if(i == 5)
+                    break;
+            }
+
+            if(target>=nums[i]){
+                st.push(i);
+                target-=nums[i];
+            }
+
+            if(target == 0){
+                count++;
+                target +=nums[st.top()];
+                st.pop();
+            }
+
+        }
+
+    cout<<count;
+}
