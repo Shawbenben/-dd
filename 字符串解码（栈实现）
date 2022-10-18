@@ -1,0 +1,67 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    int count(int val,char a,int i){
+        int x=1;
+        for(int j=0;j<i;j++,x*=10);
+        val = val + (a - '0')*x;
+        return val;
+    }
+    string decodeString(string s) {
+
+	    int l=0;
+        stack<char> st;
+        int val=0;
+        char str[5000];
+        char a;
+		int j =0 ;
+        for(int i = 0;i< s.size();i++){
+           
+            if(s[i] == ']'){
+            	
+            	j=0;
+            	a = 0;
+                while(a!='['){
+                    a =st.top();
+                   
+                    st.pop();
+                    if(a!='['){
+					
+                        str[j] = a;
+                        j++;
+                       
+                	}
+                    else{
+						while(!st.empty() &&st.top()>='0' && st.top()<='9'){
+							val = count(val,st.top(),l++);
+							st.pop();
+							
+						}
+						
+                        l=0;
+                        for(int t = j-1;val > 0;t--){
+                            st.push(str[t]);
+						                 
+                            if(t == 0){
+                                val-=1;
+                                t = j;
+                            }
+                        }
+                    }
+
+                }             
+            }
+            else{
+             	st.push( s[i] );               	
+            }				
+        }
+      
+        str[st.size()] = '\0';
+        for(int x = st.size()-1;x>=0;x--){
+        	str[x] = st.top();
+        	st.pop();
+		}
+        return str;
+    }
+};
