@@ -1,0 +1,39 @@
+# -dd
+记录每日。
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    int tem = 0;
+    int dix = 0;
+    struct ListNode* cur;
+    cur = l1;
+    if(!l1 && !l2)  return NULL;
+    else{
+        dix = (cur->val + l2->val+tem)/10;
+        cur->val = (cur->val + l2->val)%10;
+        tem = dix;
+    }
+
+    while(cur->next && l2->next){
+        cur = cur->next;
+        l2= l2->next; 
+        dix = (cur->val +l2->val +tem)/10;
+        cur->val = (cur->val + l2->val + tem)%10;
+        tem =dix;
+    }
+    if(l2->next!=NULL)    cur->next = l2->next;          
+    while(cur->next){
+        cur = cur->next;
+        dix = (cur->val +tem)/10;
+        cur->val = (cur->val+tem)%10;
+        tem = dix;
+    }
+    
+    if(tem == 1){
+        struct ListNode* newnode =(struct ListNode*)malloc(sizeof(struct ListNode));
+        newnode->next =NULL;
+        newnode->val = 1;
+        cur->next = newnode;
+    }
+
+    return l1;
+}
