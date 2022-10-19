@@ -1,0 +1,38 @@
+# -dd
+记录每日。
+void heaper(struct ListNode* l,struct ListNode* l1,struct ListNode* l2,int dix){
+    int sum =dix;
+    if(!l1 && !l2  && dix==0){
+        free(l->next);
+        l = NULL;
+        return ;
+    }
+    if(l2){
+        sum+=l2->val;
+        l2 = l2->next;
+
+    } 
+    if(l1){
+        sum +=l1->val;
+        l1 = l1->next;
+    }   
+
+  
+   
+    dix = sum /10;
+
+    struct ListNode* cur = (struct ListNode*)malloc(sizeof(struct ListNode));
+    cur->val = sum%10;
+    cur->next = NULL;
+    l->next = cur;
+   
+    heaper(l->next,l1,l2,dix);
+}
+
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    struct ListNode* l =(struct ListNode*)malloc(sizeof(struct ListNode));
+
+    heaper(l,l1,l2,0);
+    return l->next;
+}
