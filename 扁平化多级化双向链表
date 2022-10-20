@@ -1,0 +1,32 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    void F(Node* head){
+        Node* cur =head->child;
+        //head->child =NULL;
+        cur->prev = head;
+        if(cur->child)  F(cur);
+        while(cur->next){
+            if(cur->child)  F(cur);
+            cur = cur->next;
+        }
+        if(head->next){
+            head->next->prev = cur;
+            cur->next = head->next;
+        }
+        head->next = head->child;
+        head->child = NULL;
+
+        }
+    
+    Node* flatten(Node* head) {
+        if(!head)   return NULL;
+        Node* cur = head;
+        while(cur){
+            if(cur->child)  F(cur);           
+            cur = cur->next;
+        }
+        return head;
+    }
+};
