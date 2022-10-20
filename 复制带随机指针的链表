@@ -1,0 +1,46 @@
+# -dd
+记录每日。
+struct Node* copyRandomList(struct Node* head) {
+    if(!head)   return NULL;
+    struct Node* cur=head->next;
+    struct Node* phead = (struct Node*)malloc(sizeof(struct Node));
+    phead->val = head->val;
+    phead->next =NULL;
+    phead->random =NULL;
+    struct Node* ps = phead;
+    int count = 1;
+	while(cur){
+        struct Node* newnode = (struct Node*)malloc(sizeof(struct Node));
+        newnode->val = cur->val;
+        newnode->next = NULL;
+        newnode->random = NULL;
+        ps->next = newnode;
+        ps= ps->next;
+        cur = cur->next;
+        count++;
+    }
+
+    cur = head;
+    ps = phead;
+    int flag =0;
+    struct Node* tem;
+    while(cur){
+        tem = cur->random;
+        while(tem){
+            tem = tem->next;
+            flag++;
+        }
+        if(flag){
+            tem = phead;
+            for(int i =flag;i<count;i++){
+                tem = tem->next;  
+            }
+            ps->random = tem;
+        }
+        ps = ps->next;
+        cur = cur->next;
+        flag = 0;
+    }
+    
+    return phead;
+}
