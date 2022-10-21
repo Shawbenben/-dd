@@ -1,0 +1,53 @@
+# -dd
+记录每日。
+void merge(struct ListNode* head,struct ListNode* right){
+    struct ListNode* cur = (struct ListNode*)malloc(sizeof(struct ListNode));
+    cur->val = 0;
+    cur->next = NULL;
+    struct ListNode* phead=cur;
+    while(head && right){
+        if(head->val <right->val ){
+            cur->next = head;
+            head = head->next;
+            cur = cur->next;
+        }
+        else{
+            cur->next =  right;
+            right = right->next;
+            cur = cur->next;
+        }
+    }
+
+    if(head){
+      cur ->next =head;
+    }
+    if(right)   cur->next = right;   
+
+    head =phead->next;
+    phead->next =NULL;
+    free(phead);
+}
+
+void mergesort(struct ListNode* head , int count){
+    if(!head || !head->next)    return ;
+    struct ListNode* right=head;
+    for(int i = 0;i<count/2-1;i++)    right = right->next;
+    struct ListNode* tail = right;
+    right = right->next;
+    tail->next = NULL;
+    mergesort(head,count/2);
+    mergesort(right,count-count/2);
+    
+    merge(head,right);
+}
+
+struct ListNode* sortList(struct ListNode* head){
+    struct ListNode* tail = head;
+    int count = 0;
+    while(tail){
+        tail = tail->next;
+        count++;
+    }
+    mergesort(head,count);
+    return head;
+}
