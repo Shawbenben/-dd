@@ -1,0 +1,17 @@
+# -dd
+记录每日。
+void reorderList(struct ListNode* head){
+ if(head==NULL)  return;
+    if(head->next==NULL||head->next->next==NULL)    return ;
+    struct ListNode* cur ,*tail;
+    cur=tail=head;
+    while(tail->next->next){
+        tail=tail->next;
+    }
+    cur=head->next;
+    tail->next->next=cur;
+    head->next=tail->next;
+    tail->next=NULL;
+    reorderList(head->next->next);
+   
+}
