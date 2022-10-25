@@ -1,0 +1,17 @@
+# -dd
+记录每日。
+public:
+    void heaper(vector<vector<int>> &res,TreeNode* cur,int level){
+        vector<int>tem 
+        res.push_back()
+        res[level].push_back(cur->val);
+        if(cur->left) heaper(res,cur->left,level+1);
+        if(cur->right)  heaper(res,cur->right,level+1);
+}
+
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if(!root)   return res;
+        heaper(res,root,0);
+        return res;
+    }
