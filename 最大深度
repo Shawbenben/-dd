@@ -1,0 +1,28 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        return root==NULL ? 0 : max(maxDepth(root->left)+1,maxDepth(root->right)+1);
+    }
+};‘
+
+class Solution {
+public:
+    int heaper(TreeNode* root,int i){
+        int left,right;
+        left = right = i;
+        if(root->left)  left = heaper(root->left,i+1);
+        if(root->right) right = heaper(root->right,i+1);
+
+        return max(left,right);
+        
+    }
+    int maxDepth(TreeNode* root) {
+       
+        int res;
+        if(!root)   return 0;
+        res = heaper(root,1);
+        return res;
+    }
+};
