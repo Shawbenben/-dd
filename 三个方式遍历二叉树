@@ -1,0 +1,53 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        
+        vector<int> res;
+        if(!root)   return res;
+        stack<TreeNode*> st;
+        TreeNode* tem = root;
+        st.push(root);
+        while(!st.empty()){
+            tem = st.top();
+            st.pop();
+            res.push_back(tem->val);
+            if(tem->right)  st.push(tem->right);
+            if(tem->left)   st.push(tem->left);
+        }
+       
+      
+        return res;
+    }
+};
+  void inorder(struct TreeNode* root, int* res, int* resSize) {
+    
+    if(root){
+        inorder(root->left, res, resSize);
+    re
+  [(*resSize)++] = root->val;
+    inorder(root->right, res, resSize);
+    }
+}
+
+int* inorderTraversal(struct TreeNode* root, int* returnSize) {
+    int* res = (int*)malloc( 101*sizeof(int) );
+    *returnSize = 0;
+    inorder(root, res, returnSize);
+    return res;
+}
+  void travel(struct TreeNode* root,int*returnSize,int* res){
+    if(root){
+        travel(root->left,returnSize,res);
+        travel(root->right,returnSize,res);
+        res[(*returnSize)++] = root->val;
+    }
+}
+
+int* postorderTraversal(struct TreeNode* root, int* returnSize){
+    int *res = (int*)malloc(sizeof(int) * 101);
+    *returnSize = 0;
+    travel(root,returnSize,res);
+    return res;
+}
