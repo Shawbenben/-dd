@@ -1,0 +1,18 @@
+# -dd
+记录每日。
+class Solution {
+public:
+bool heaper(TreeNode* l,TreeNode* r){
+    if(l==NULL && r==NULL)  return true;
+    else if(l && r){
+        if(l->val == r->val)  
+            return heaper(l->right,r->left)&&heaper(l->left,r->right);
+        else
+            return false;
+    }
+    else    return false;
+}
+    bool isSymmetric(TreeNode* root) {
+       return  heaper(root->left,root->right);
+    }
+};
