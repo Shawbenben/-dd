@@ -1,0 +1,68 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(!root)   return NULL;
+        queue<Node*> qu;
+        qu.push(root);
+        int len =1;
+        Node* tem;
+        int flag = 1;
+        while(!qu.empty()&&flag){
+            len = qu.size();
+            tem = qu.front();
+            if(tem->right){
+                qu.push(tem->left);
+                qu.push(tem->right);
+            }
+            else{
+                flag = 0;
+            }
+            qu.pop();
+            for(int i= 1;i<len;i++){
+                tem->next = qu.front();
+                tem = tem->next;
+                if(flag){
+                    qu.push(tem->left);
+                    qu.push(tem->right);
+                }
+                qu.pop();
+            }
+
+        }
+
+        return root;
+    }
+};
+
+
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+         if(!root)   return NULL;
+        queue<Node*> qu;
+        qu.push(root);
+        int len =1;
+        Node* tem;
+        
+        while(!qu.empty()){
+            len = qu.size();
+            tem = qu.front();
+            if(tem->left)  qu.push(tem->left);
+            if(tem->right)   qu.push(tem->right);
+            qu.pop();
+            for(int i= 1;i<len;i++){
+                tem->next = qu.front();
+                tem = tem->next;
+                if(tem->left)  qu.push(tem->left);
+                if(tem->right)   qu.push(tem->right);
+                qu.pop();
+            }
+
+        }
+
+        return root;
+    }
+};
