@@ -1,0 +1,76 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    typedef struct location{
+        int col;
+        int row;
+    }L;
+    int numIslands(vector<vector<char>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+       int flag = 0;
+        queue<L> land;
+        queue<L> water;
+        int count = 0;
+        location cur;
+        cur.col = 0;
+        cur.row = 0;
+        if(grid[0][0] == '1' )  land.push(cur);
+        else    water.push(cur);
+        while(!water.empty() || !land.empty()){
+            location tem;
+            if(!land.empty())   count++;
+            while(!land.empty()){
+                cur = land.front();
+                if(cur.col<n-1){
+                    tem.col = cur.col+1;
+                    tem.row = cur.row;
+                    if(grid[tem.row][tem.col] == '1')   land.push(tem);
+                    else if(grid[tem.row][tem.col] == '2')  flag =1;
+                    else    water.push(tem);
+                }
+                if(cur.row < m-1){
+                    tem.col = cur.col;
+                    tem.row = cur.row+1;
+                    if(grid[tem.row][tem.col] == '1')   land.push(tem);
+                    else if(grid[tem.row][tem.col] == '2')  flag =1;
+                    else water.push(tem);
+                }
+                grid[cur.row][cur.col] =  '2';
+                land.pop();
+            }
+            if(flag == 1){
+                count--;
+                flag = 0;
+            }
+            while(!water.empty()){
+                cur = water.front();
+                if(cur.col<n-1){
+                    tem.col = cur.col+1;
+                    tem.row = cur.row;
+                    if(grid[tem.row][tem.col] == '1'){
+                        land.push(tem);
+                        break;
+                    }
+                    else if(grid[tem.row][tem.col] == '0') 
+                        water.push(tem);          
+                }
+                if(cur.row < m-1){
+                    tem.col = cur.col;
+                    tem.row = cur.row+1;
+                    if(grid[tem.row][tem.col] == '1'){
+                        land.push(tem);
+                        break;
+                    }
+                    else if(grid[tem.row][tem.col] == '0') 
+                        water.push(tem);  
+                }
+                water.pop();
+            }
+
+
+        }
+        return count;
+    }
+};
