@@ -1,0 +1,25 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    int numSquares(int n) {
+        queue<int> qu;
+        qu.push(n);
+        int count = 0;
+        while(!qu.empty()){
+            int len = qu.size();
+            count++;
+            for(int i = 0;i<len;i++){
+
+                int tem = qu.front();
+                for(int j =0;j*j<=tem;j++){
+                    if(tem == j*j)  return count;
+                    qu.push(tem - j*j);
+                }
+                qu.pop();
+            }
+
+        }
+        return count;
+    }
+};
