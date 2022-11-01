@@ -1,0 +1,31 @@
+# -dd
+记录每日。
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        stack<TreeNode*>   st;
+        
+        st.push(root);
+        root = root->left;
+        TreeNode* prev;
+        prev = NULL;
+        while(!st.empty()){
+           
+
+            while(root){             
+                st.push(root);
+                root = root->left;
+            }
+            root = st.top();
+            st.pop();
+
+            if(prev!= NULL && root->val <= prev->val){
+                return false;
+            }
+            prev = root;
+            root = root->right;
+            
+        }
+        return true;
+    }
+};
