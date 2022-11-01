@@ -1,0 +1,26 @@
+# -dd
+记录每日。
+//相当于将二叉树中序展开，prev 则始终为root 的前置
+class Solution {
+public:
+
+    TreeNode* prve;//创建一个全局的前置变量。
+    bool isValidBST(TreeNode* root) {
+        if(!root)    return true;
+        //进入左子树
+        if(!isValidBST(root->left)){//使用若为！false 则直接return false。！true则跳过这步进入下一步；
+            return false;
+        }
+      //中序遍历
+        if(prve!=NULL && root->val <= prve->val){//中序判断。
+            return  false;
+        }
+        prve = root;//prve向前一步
+        //访问右子树
+        if(!isValidBST(root->right)){
+            return false;
+        }
+
+        return true;//若无叶子则直接返回true，或终了遍历。
+    }
+};
